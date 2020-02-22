@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/static/js/jquery-3.3.js">
+    </script>
+</head>
+<body>
+
+<form>
+
+    用户名 <input type="text" id="user">
+    密码 <input type="password" id="pwd">
+    <input type="button" value="提交" id="login_btn">  <span id="error">{{ error }}</span>
+    {% csrf_token %}
+
+</form>
+
+<script>
+
+    $('#login_btn').click(function () {
+
+        // 发送Ajax请求登录认证
+
+        /*
+        *
+        *    序列化方法：  JSON.stringify()  等同于Python的 json.dumps()
+        *    反序列化方法： JSON.parse()     等同于Python的 json.loads()
+        *
+        *
+        * */
+
+
+        $.ajax({
+            url:'/login/',
+            type:'post',
+            data:{
+                user:$('#user').val(),
+                pwd:$('#pwd').val(),
+                csrfmiddlewaretoken:$("[name='csrfmiddlewaretoken']").val()
+            },
+            success:function (response) {
+                console.log(response);
+                var res=JSON.parse(response);
+                console.log(res);
+                if (res.user){
+                    //登录成功
+                    location.href='/index/';
+                }else{
+                    // 登录失败
+                    $('#error').html(res.error).css('color','red');
+                    setTimeout(function () {
+                        $('.error').html('');
+                    },1000)
+                }
+            }
+        })
+    })
+
+</script>
+
+</body>
+</html>

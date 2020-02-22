@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-3.3.js"></script>
+
+    <script>
+
+        // each 循环
+        // 1 循环数据
+
+        var arr = [123,5,44,66];
+        $.each(arr,function (i,j) {
+            console.log(i,j)
+
+        });
+
+
+        var  obj = {'name':'alex','age':123};
+
+        $.each(obj,function (i,j) {
+            console.log(i,j)
+
+        });
+
+        // 2 循环标签
+        $(function () {  // function 是加载完再执行，否则这个script标签要放到body中
+
+
+        $('ul li').each(function () {
+            console.log($(this).html())  //循环每一个li 标签
+        })
+        });
+
+    </script>
+
+</head>
+<body>
+
+<ul>
+    <li>123</li>
+    <li>456</li>
+    <li>789</li>
+    <li>789e</li>
+    <li>789r</li>
+    <li>789t</li>
+</ul>
+
+
+
+</body>
+</html>

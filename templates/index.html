@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/static/js/jquery-3.3.js">
+    </script>
+</head>
+<body>
+
+
+
+<h4>1 简单的Ajax请求</h4>
+<button class="btn">提交Ajax</button>
+<p class="show"></p>
+
+<hr>
+
+<h4>2 携带参数的Ajax</h4>
+{% csrf_token %}
+<input type="text" id="num1"> + <input type="text" id="num2"> = <input type="text" id="num3">   <button class="cal">计算</button>
+<hr>
+
+<h4>3 contentType</h4>
+
+<form action="/name/" method="post" enctype="application/x-www-form-urlencoded">
+    {% csrf_token %}
+    姓名 <input type="text" name="user">
+    <input type="submit">
+    
+    
+</form>
+
+<hr>
+
+<h4>4 文件上传</h4>
+
+<form action="/file_put/" method="post" enctype="multipart/form-data">
+    姓名 <input type="text" name="user">
+    文件 <input type="file" name="file_obj">
+    <input type="submit" value="提交">
+
+</form>
+
+
+<script>
+
+    // 简单的ajax请求
+    $('.btn').click(function () {
+        {#alert(123)#}
+        $.ajax({
+            url:"/handle_ajax/",
+            type:'get',
+            success:function (response) {
+                console.log(response);
+                $('.show').html(response)
+            }
+        })
+    })
+
+    // 传参Ajax请求
+
+    $('.cal').click(function () {
+        var num1 = $('#num1').val();
+        var num2 = $('#num2').val();
+
+
+        $.ajax({
+            url:"/cal/",
+            type: "post",
+            contentType:"json",   // key1   大多数使用的是json
+            data :JSON.stringify({    // key2  只有Ajax可以发json，form表单无法用json
+                num1:num1,
+                num2:num2,
+                csrfmiddlewaretoken:$("[name='csrfmiddlewaretoken']").val()  {# type为post时，要加csrf的数据传至服务器 #}
+            }),
+            success:function (response) {
+                console.log(response);
+                $('#num3').val(response)
+
+            }
+        })
+    })
+
+</script>
+
+</body>
+</html>
